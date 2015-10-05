@@ -2,6 +2,7 @@ package pushkarlanka.gosudoku;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,11 +20,14 @@ public class GridActivity extends Activity {
 
     private static final int DIMENSION = 9;
     private EditText[][] gridItems;
+    private Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
+
+        res = getResources();
 
         gridItems = new EditText[DIMENSION][DIMENSION];
 
@@ -47,6 +51,7 @@ public class GridActivity extends Activity {
 
                 if(!gridItemValue.equals("0")) {
                     gridItem.setTextColor(Color.parseColor("#000000"));
+                    gridItem.setBackground(res.getDrawable(R.drawable.grid_filled_item, getTheme()));
                     gridItem.setEnabled(false);
                 }
 

@@ -1,6 +1,6 @@
 <resources>
     <color name="app_blue">#3d98ff</color>
-    <color name="grid_item_border">#D3D3D3</color>
+    <color name="grid_item_gray">#D3D3D3</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
 </resources>

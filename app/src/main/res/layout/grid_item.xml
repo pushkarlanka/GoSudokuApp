@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@drawable/grid_item_border"
+    android:background="@drawable/grid_item"
     android:textColor="#3d98ff"
     android:inputType="number"
     android:maxLength="1">
