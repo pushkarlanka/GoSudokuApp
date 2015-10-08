@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 
 import models.GridSolver;
 
@@ -21,6 +22,9 @@ public class GridActivity extends Activity {
     private static final int DIMENSION = 9;
     private EditText[][] gridItems;
     private Resources res;
+    private boolean hintBtnClicked = false;
+    private GridSolver gridSolver;
+    private int[][] solvedGrid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,10 @@ public class GridActivity extends Activity {
         gridItems = new EditText[DIMENSION][DIMENSION];
 
         String initialGridValues = "400000060000097000007200000005601470001008090000520000010800000006000030030902740";
+
+        gridSolver = new GridSolver(initialGridValues);
+        solvedGrid = gridSolver.getSolution();
+
         setInitialGrid(initialGridValues);
 
         setOnClickListeners();
@@ -45,9 +53,23 @@ public class GridActivity extends Activity {
         for(int i = 0; i < DIMENSION; i++) {
             TableRow gridRow = (TableRow) inflater.inflate(R.layout.grid_row,null);
             for(int j = 0; j < DIMENSION; j++) {
-                EditText gridItem = (EditText) inflater.inflate(R.layout.grid_item, null);
+                final EditText gridItem = (EditText) inflater.inflate(R.layout.grid_item, null);
                 String gridItemValue = String.valueOf(initialGridValues.charAt(i * DIMENSION + j));
                 gridItem.setText(gridItemValue);
+
+                final int r = i;
+                final int c = j;
+                gridItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(hintBtnClicked) {
+                            gridItem.setEnabled(false);
+                            gridItem.setText(String.valueOf(solvedGrid[r][c]));
+                            gridItem.setTextColor(res.getColor(R.color.hint_btn_red));
+                            setHintBtnToDefault();
+                        }
+                    }
+                });
 
                 if(!gridItemValue.equals("0")) {
                     gridItem.setTextColor(Color.parseColor("#000000"));
@@ -86,8 +108,9 @@ public class GridActivity extends Activity {
 
     private void setOnClickListeners() {
 
-        final GridSolver gridSolver = new GridSolver(getCurrentGridValues());
-        final int[][] solvedGrid = gridSolver.getSolution();
+        // changing design to calculate these in onCreate() ___ Oct 8th '15
+//        final GridSolver gridSolver = new GridSolver(getCurrentGridValues());
+//        final int[][] solvedGrid = gridSolver.getSolution();
 
         Button solveBtn = (Button) findViewById(R.id.solve_btn);
         solveBtn.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +126,25 @@ public class GridActivity extends Activity {
                 }
             }
         });
+
+        final Button hintBtn = (Button) findViewById(R.id.hint_btn);
+        hintBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!hintBtnClicked) {
+                    hintBtnClicked = true;
+//                    hintBtn.setBackgroundColor(res.getColor(R.color.hint_btn_red));
+                    hintBtn.setBackground(res.getDrawable(R.drawable.hint_btn_selected, getTheme()));
+                    hintBtn.setTextColor(res.getColor(R.color.white));
+                    Toast.makeText(getApplicationContext(), "Double Click On A Tile", Toast.LENGTH_SHORT).show();
+
+                    // show hint
+                }
+                else {
+                    setHintBtnToDefault();
+                }
+            }
+        });
     }
 
     private int[][] getCurrentGridValues() {
@@ -115,5 +157,11 @@ public class GridActivity extends Activity {
         return currentGridValues;
     }
 
-    //testing git
+    private void setHintBtnToDefault() {
+        hintBtnClicked = false;
+
+        Button hintBtn = (Button) findViewById(R.id.hint_btn);
+        hintBtn.setBackground(res.getDrawable(R.drawable.solve_btn_generic, getTheme()));
+        hintBtn.setTextColor(res.getColor(R.color.black));
+    }
 }

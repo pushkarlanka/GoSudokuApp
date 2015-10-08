@@ -3,4 +3,5 @@
     <color name="grid_item_gray">#D3D3D3</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="hint_btn_red">#931c2d</color>
 </resources>

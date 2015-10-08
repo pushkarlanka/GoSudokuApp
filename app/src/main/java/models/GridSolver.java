@@ -16,6 +16,12 @@ public class GridSolver {
         this.miniGridDimension = (int) Math.sqrt(dimension);
     }
 
+    public GridSolver(String initialValues) {
+        this.dimension = (int) Math.sqrt(initialValues.length());
+        this.miniGridDimension = (int) Math.sqrt(dimension);
+        this.grid = stringToBoard(initialValues);
+    }
+
     public boolean isSolvable() {
         return solvable;
     }
@@ -102,5 +108,15 @@ public class GridSolver {
             }
         }
         return deepCopy;
+    }
+
+    private int[][] stringToBoard(String values) {
+        int[][] grid = new int[dimension][dimension];
+        for(int i = 0; i < dimension; i++) {
+            for(int j = 0; j < dimension; j++) {
+                grid[i][j] = Integer.parseInt(String.valueOf(values.charAt((i * dimension) + j)));
+            }
+        }
+        return grid;
     }
 }

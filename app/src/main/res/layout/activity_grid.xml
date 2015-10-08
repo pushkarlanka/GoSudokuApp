@@ -28,14 +28,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/solve_btn_generic"
         android:id="@+id/hint_btn"
-        android:text="Hint"
-        />
+        android:text="Hint" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/solve_btn"
+        android:background="@drawable/solve_btn_generic"
+        android:layout_marginTop="12dp"
         android:layout_gravity="center_horizontal"
         android:text="Solve"/>
 
