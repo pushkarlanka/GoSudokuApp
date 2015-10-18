@@ -161,7 +161,7 @@ public class GridActivity extends Activity {
         hintBtnClicked = false;
 
         Button hintBtn = (Button) findViewById(R.id.hint_btn);
-        hintBtn.setBackground(res.getDrawable(R.drawable.solve_btn_generic, getTheme()));
+        hintBtn.setBackground(res.getDrawable(R.drawable.btn_generic, getTheme()));
         hintBtn.setTextColor(res.getColor(R.color.black));
     }
 }

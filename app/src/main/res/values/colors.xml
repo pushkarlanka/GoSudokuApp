@@ -4,4 +4,5 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="hint_btn_red">#931c2d</color>
+    <color name="transparent">#00000000</color>
 </resources>
