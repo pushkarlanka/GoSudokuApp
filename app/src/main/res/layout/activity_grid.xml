@@ -25,6 +25,16 @@
 
     </TableLayout>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/number_buttons_row"
+        android:orientation="horizontal">
+
+        <!--Number buttons go here-->
+
+    </LinearLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

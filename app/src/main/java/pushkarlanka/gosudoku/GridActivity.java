@@ -11,9 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import models.GridSolver;
 
@@ -51,9 +55,9 @@ public class GridActivity extends Activity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for(int i = 0; i < DIMENSION; i++) {
-            TableRow gridRow = (TableRow) inflater.inflate(R.layout.grid_row,null);
+            TableRow gridRow = (TableRow) inflater.inflate(R.layout.grid_row, null);
             for(int j = 0; j < DIMENSION; j++) {
-                final EditText gridItem = (EditText) inflater.inflate(R.layout.grid_item, null);
+                final EditText gridItem = (EditText) inflater.inflate(R.layout.grid_item, gridRow, false);
                 String gridItemValue = String.valueOf(initialGridValues.charAt(i * DIMENSION + j));
                 gridItem.setText(gridItemValue);
 
@@ -81,6 +85,14 @@ public class GridActivity extends Activity {
                 gridRow.addView(gridItem);
             }
             grid.addView(gridRow);
+        }
+
+
+        LinearLayout numButtonsRow = (LinearLayout) findViewById(R.id.number_buttons_row);
+        for(int i = 1; i <= DIMENSION; i++) {
+            Button numButton = (Button) inflater.inflate(R.layout.num_button, numButtonsRow, false);
+            numButton.setText(String.valueOf(i));
+            numButtonsRow.addView(numButton);
         }
     }
 
