@@ -12,25 +12,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import models.GridSolver;
 
 public class GridActivity extends Activity {
 
     private static final int DIMENSION = 9;
-    private EditText[][] gridItems;
+    private TextView[][] gridItems;
     private Resources res;
     private boolean hintBtnClicked = false;
     private GridSolver gridSolver;
     private int[][] solvedGrid;
+    LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +36,9 @@ public class GridActivity extends Activity {
         setContentView(R.layout.activity_grid);
 
         res = getResources();
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        gridItems = new EditText[DIMENSION][DIMENSION];
+        gridItems = new TextView[DIMENSION][DIMENSION];
 
         String initialGridValues = "400000060000097000007200000005601470001008090000520000010800000006000030030902740";
 
@@ -47,6 +46,7 @@ public class GridActivity extends Activity {
         solvedGrid = gridSolver.getSolution();
 
         setInitialGrid(initialGridValues);
+        createNumberButtons();
 
         setOnClickListeners();
 
@@ -58,14 +58,15 @@ public class GridActivity extends Activity {
     private void setInitialGrid(String initialGridValues) {
 
         TableLayout grid = (TableLayout) findViewById(R.id.main_grid);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for(int i = 0; i < DIMENSION; i++) {
             TableRow gridRow = (TableRow) inflater.inflate(R.layout.grid_row, null);
             for(int j = 0; j < DIMENSION; j++) {
-                final EditText gridItem = (EditText) inflater.inflate(R.layout.grid_item, gridRow, false);
+                final TextView gridItem = (TextView) inflater.inflate(R.layout.grid_item, gridRow, false);
                 String gridItemValue = String.valueOf(initialGridValues.charAt(i * DIMENSION + j));
-                gridItem.setText(gridItemValue);
+                if(!gridItemValue.equals("0")) {
+                    gridItem.setText(gridItemValue);
+                }
 
                 final int r = i;
                 final int c = j;
@@ -92,12 +93,20 @@ public class GridActivity extends Activity {
             }
             grid.addView(gridRow);
         }
+    }
 
+    private void createNumberButtons() {
 
         LinearLayout numButtonsRow = (LinearLayout) findViewById(R.id.number_buttons_row);
         for(int i = 1; i <= DIMENSION; i++) {
-            Button numButton = (Button) inflater.inflate(R.layout.num_button, numButtonsRow, false);
+            final Button numButton = (Button) inflater.inflate(R.layout.num_button, numButtonsRow, false);
             numButton.setText(String.valueOf(i));
+            numButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
             numButtonsRow.addView(numButton);
         }
     }
@@ -152,7 +161,7 @@ public class GridActivity extends Activity {
                 if(!hintBtnClicked) {
                     hintBtnClicked = true;
 //                    hintBtn.setBackgroundColor(res.getColor(R.color.hint_btn_red));
-                    hintBtn.setBackground(res.getDrawable(R.drawable.hint_btn_selected, getTheme()));
+                    hintBtn.setBackground(res.getDrawable(R.drawable.btn_selected_red, getTheme()));
                     hintBtn.setTextColor(res.getColor(R.color.white));
                     Toast.makeText(getApplicationContext(), "Double Click On A Tile", Toast.LENGTH_SHORT).show();
 
