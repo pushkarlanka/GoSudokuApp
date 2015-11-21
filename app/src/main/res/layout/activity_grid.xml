@@ -2,17 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:background="@drawable/paper_texture_bg_small"
     tools:context="pushkarlanka.sudokosolver.GridActivity">
 
-    <TextView
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="00:00:00"-->
+        <!--android:layout_gravity="center_horizontal"/>-->
+
+    <Chronometer
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00:00"
-        android:layout_gravity="center_horizontal"/>
+        android:id="@+id/chronometer"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/hint_btn_red"
+        android:layout_gravity="center_horizontal"
+        android:textSize="40sp" />
 
     <TableLayout
         android:layout_width="wrap_content"
@@ -35,22 +43,29 @@
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:background="@drawable/btn_generic"
-        android:id="@+id/hint_btn"
-        android:text="Hint" />
+        android:orientation="horizontal">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/solve_btn"
-        android:background="@drawable/btn_generic"
-        android:layout_marginTop="12dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Solve"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_generic"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="40dp"
+            android:id="@+id/hint_btn"
+            android:text="Hint" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/solve_btn"
+            android:background="@drawable/btn_generic"
+            android:text="Solve"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>
