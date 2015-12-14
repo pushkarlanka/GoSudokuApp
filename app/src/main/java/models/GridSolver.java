@@ -10,25 +10,31 @@ public class GridSolver {
     private int dimension;
     private int miniGridDimension;
 
-    public GridSolver(int[][] grid) {
-        this.grid = getDeepCopy(grid);
-        this.dimension = grid.length;
-        this.miniGridDimension = (int) Math.sqrt(dimension);
-    }
+//    public GridSolver(int[][] grid) {
+//        this.grid = getDeepCopy(grid);
+//        this.dimension = grid.length;
+//        this.miniGridDimension = (int) Math.sqrt(dimension);
+//        this.solvable = solverHelper();
+//    }
 
     public GridSolver(String initialValues) {
         this.dimension = (int) Math.sqrt(initialValues.length());
         this.miniGridDimension = (int) Math.sqrt(dimension);
         this.grid = stringToBoard(initialValues);
+        this.solvable = solverHelper();
     }
 
     public boolean isSolvable() {
         return solvable;
     }
 
-    public int[][] getSolution() {
-        solvable = solverHelper();
-        return grid;
+//    public int[][] getSolution() {
+//        solvable = solverHelper();
+//        return grid;
+//    }
+
+    public int get(int row, int col) {
+        return grid[row][col];
     }
 
     private boolean solverHelper() {

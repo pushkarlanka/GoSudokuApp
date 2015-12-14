@@ -25,10 +25,11 @@ public class GridActivity extends Activity {
     private static final int DIMENSION = 9;
     private TextView[][] gridItems;
     private Resources res;
-    private boolean hintBtnClicked = false;
     private GridSolver gridSolver;
-    private int[][] solvedGrid;
-    LayoutInflater inflater;
+//    private int[][] solvedGrid;
+    private LayoutInflater inflater;
+    private TextView selectedItem;
+    private int selectedItemHint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +40,12 @@ public class GridActivity extends Activity {
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         gridItems = new TextView[DIMENSION][DIMENSION];
+        selectedItem = null;
 
         String initialGridValues = "400000060000097000007200000005601470001008090000520000010800000006000030030902740";
 
         gridSolver = new GridSolver(initialGridValues);
-        solvedGrid = gridSolver.getSolution();
+//        solvedGrid = gridSolver.getSolution();
 
         setInitialGrid(initialGridValues);
         createNumberButtons();
@@ -73,12 +75,12 @@ public class GridActivity extends Activity {
                 gridItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(hintBtnClicked) {
-                            gridItem.setEnabled(false);
-                            gridItem.setText(String.valueOf(solvedGrid[r][c]));
-                            gridItem.setTextColor(res.getColor(R.color.hint_btn_red));
-                            setHintBtnToDefault();
+                        if(selectedItem != null) {
+                            selectedItem.setBackground(res.getDrawable(R.drawable.grid_item, getTheme()));
                         }
+                        selectedItem = gridItem;
+                        selectedItemHint = gridSolver.get(r, c);
+                        selectedItem.setBackground(res.getDrawable(R.drawable.grid_selected_item, getTheme()));
                     }
                 });
 
@@ -104,7 +106,11 @@ public class GridActivity extends Activity {
             numButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    if(selectedItem == null) {
+                        Toast.makeText(getApplicationContext(), "Click on a tile!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        selectedItem.setText(numButton.getText());
+                    }
                 }
             });
             numButtonsRow.addView(numButton);
@@ -147,7 +153,7 @@ public class GridActivity extends Activity {
                 if (gridSolver.isSolvable()) {
                     for (int i = 0; i < DIMENSION; i++) {
                         for (int j = 0; j < DIMENSION; j++) {
-                            gridItems[i][j].setText(String.valueOf(solvedGrid[i][j]));
+                            gridItems[i][j].setText(String.valueOf(gridSolver.get(i, j)));
                         }
                     }
                 }
@@ -158,17 +164,11 @@ public class GridActivity extends Activity {
         hintBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!hintBtnClicked) {
-                    hintBtnClicked = true;
-//                    hintBtn.setBackgroundColor(res.getColor(R.color.hint_btn_red));
-                    hintBtn.setBackground(res.getDrawable(R.drawable.btn_selected_red, getTheme()));
-                    hintBtn.setTextColor(res.getColor(R.color.white));
-                    Toast.makeText(getApplicationContext(), "Double Click On A Tile", Toast.LENGTH_SHORT).show();
-
-                    // show hint
-                }
-                else {
-                    setHintBtnToDefault();
+                if(selectedItem == null) {
+                    Toast.makeText(getApplicationContext(), "Click on a tile!", Toast.LENGTH_SHORT).show();
+                } else {
+                    selectedItem.setText(String.valueOf(selectedItemHint));
+                    selectedItem.setTextColor(res.getColor(R.color.hint_btn_red));
                 }
             }
         });
@@ -182,13 +182,5 @@ public class GridActivity extends Activity {
             }
         }
         return currentGridValues;
-    }
-
-    private void setHintBtnToDefault() {
-        hintBtnClicked = false;
-
-        Button hintBtn = (Button) findViewById(R.id.hint_btn);
-        hintBtn.setBackground(res.getDrawable(R.drawable.btn_generic, getTheme()));
-        hintBtn.setTextColor(res.getColor(R.color.black));
     }
 }
