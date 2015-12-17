@@ -3,6 +3,7 @@
     android:layout_width="30dp"
     android:layout_height="30dp"
     android:layout_weight="0.11"
+    android:layout_marginRight="2dp"
     android:textSize="20sp"
     android:background="@drawable/home_item_border"
     android:textColor="@color/app_blue">

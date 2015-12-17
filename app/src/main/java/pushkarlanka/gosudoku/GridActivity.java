@@ -23,6 +23,7 @@ import models.GridSolver;
 public class GridActivity extends Activity {
 
     private static final int DIMENSION = 9;
+    private static final int MINI_DIMENSION = (int) Math.sqrt((double) DIMENSION);
     private TextView[][] gridItems;
     private Resources res;
     private GridSolver gridSolver;
@@ -30,6 +31,8 @@ public class GridActivity extends Activity {
     private LayoutInflater inflater;
     private TextView selectedItem;
     private int selectedItemHint;
+    private Button[] numButtons;
+    private boolean[] numButtonsVisited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +44,14 @@ public class GridActivity extends Activity {
 
         gridItems = new TextView[DIMENSION][DIMENSION];
         selectedItem = null;
+        numButtons = new Button[DIMENSION];
 
         String initialGridValues = "400000060000097000007200000005601470001008090000520000010800000006000030030902740";
 
         gridSolver = new GridSolver(initialGridValues);
-//        solvedGrid = gridSolver.getSolution();
 
-        setInitialGrid(initialGridValues);
         createNumberButtons();
+        setInitialGrid(initialGridValues);
 
         setOnClickListeners();
 
@@ -81,6 +84,8 @@ public class GridActivity extends Activity {
                         selectedItem = gridItem;
                         selectedItemHint = gridSolver.get(r, c);
                         selectedItem.setBackground(res.getDrawable(R.drawable.grid_selected_item, getTheme()));
+
+                        highlightNumButtons(r, c);
                     }
                 });
 
@@ -95,6 +100,7 @@ public class GridActivity extends Activity {
             }
             grid.addView(gridRow);
         }
+
     }
 
     private void createNumberButtons() {
@@ -106,7 +112,7 @@ public class GridActivity extends Activity {
             numButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(selectedItem == null) {
+                    if (selectedItem == null) {
                         Toast.makeText(getApplicationContext(), "Click on a tile!", Toast.LENGTH_SHORT).show();
                     } else {
                         selectedItem.setText(numButton.getText());
@@ -114,6 +120,54 @@ public class GridActivity extends Activity {
                 }
             });
             numButtonsRow.addView(numButton);
+            numButtons[i - 1] = numButton;
+        }
+    }
+
+    private void highlightNumButtons(int r, int c) {
+
+        numButtonsVisited = new boolean[DIMENSION];
+
+//        for(int i = 0; i < DIMENSION; i++) {
+//            numButtons[i].setBackground(res.getDrawable(R.drawable.home_item_border, getTheme()));
+//        }
+
+        for(int i = 0; i < DIMENSION; i++) {
+            String num = gridItems[r][i].getText().toString();
+            if(!num.equals("")) {
+                int numVal = Integer.parseInt(num) - 1;
+                numButtons[numVal].setBackground(res.getDrawable(R.drawable.num_button_red, getTheme()));
+                numButtonsVisited[numVal] = true;
+            }
+        }
+
+        for(int i = 0; i < DIMENSION; i++) {
+            String num = gridItems[i][c].getText().toString();
+            if(!num.equals("")) {
+                int numVal = Integer.parseInt(num) - 1;
+                numButtons[numVal].setBackground(res.getDrawable(R.drawable.num_button_red, getTheme()));
+                numButtonsVisited[numVal] = true;
+            }
+        }
+
+        int mmRow = (r / MINI_DIMENSION) * MINI_DIMENSION;
+        int mmCol = (c / MINI_DIMENSION) * MINI_DIMENSION;
+
+        for(int row = mmRow; row < mmRow + MINI_DIMENSION; row++) {
+            for (int col = mmCol; col < mmCol + MINI_DIMENSION; col++) {
+                String num = gridItems[row][col].getText().toString();
+                if (!num.equals("")) {
+                    int numVal = Integer.parseInt(num) - 1;
+                    numButtons[numVal].setBackground(res.getDrawable(R.drawable.num_button_red, getTheme()));
+                    numButtonsVisited[numVal] = true;
+                }
+            }
+        }
+
+        for(int i = 0; i < DIMENSION; i++) {
+            if(!numButtonsVisited[i]) {
+                numButtons[i].setBackground(res.getDrawable(R.drawable.num_button_green, getTheme()));
+            }
         }
     }
 
